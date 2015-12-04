@@ -214,6 +214,7 @@ class Socket
 
 			$closure = Module\Stack::getInstance()->getClosure("removeTimer");
 			$closure($context, $this->reconnect_timer);
+			$this->reconnect_timer = null;
 		}
 
 		# The socket is already dead, but we want to run some extra clean-up
