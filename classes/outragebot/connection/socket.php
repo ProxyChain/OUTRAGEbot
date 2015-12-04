@@ -92,6 +92,12 @@ class Socket
 	 *	What is the nickname of this bot?
 	 */
 	public $nickname = null;
+
+
+	/**
+	 *	Timer used to track reconnections
+	 */
+	public $reconnect_timer = null;
 	
 	
 	/**
@@ -169,7 +175,7 @@ class Socket
 	{
 		$this->write("QUIT :".$reason);
 		
-		fclose($this->socket);
+		@fclose($this->socket);
 		
 		if($this->pingtimer)
 		{
@@ -192,6 +198,39 @@ class Socket
 		$this->pingindex = 0;
 		
 		return $this;
+	}
+
+
+	/**
+	 *	Reconnects to the IRC server upon unexpected disconnection
+	 */
+	public function reconnect()
+	{
+		# Kill timer if set
+		if($this->reconnect_timer !== null)
+		{
+			$context = new Element\Context();
+			$context->callee = $this;
+
+			$closure = Module\Stack::getInstance()->getClosure("removeTimer");
+			$closure($context, $this->reconnect_timer);
+		}
+
+		# The socket is already dead, but we want to run some extra clean-up
+		$this->disconnect();
+
+		# Set-up timer to reconnect
+		if($closure = Module\Stack::getInstance()->getClosure("addTimer"))
+		{
+			$context = new Element\Context();
+			$context->callee = $this;
+
+			# Save timer for later reference
+			$this->reconnect_timer = $closure($context, function()
+			{
+				$this->connect();
+			}, 5);
+		}
 	}
 	
 	
@@ -264,7 +303,11 @@ class Socket
 	public function write($message)
 	{
 		if($this->socket)
-			fwrite($this->socket, $message."\r\n");
+		{
+			# Reconnect to the IRC server if the socket dies
+			if(@fwrite($this->socket, $message."\r\n") === false)
+				$this->reconnect();
+		}
 		
 		return $this;
 	}
@@ -291,6 +334,10 @@ class Socket
 		while(true)
 		{
 			$character = fgetc($this->socket);
+
+			# Reconnect to IRC server if EOF is detected
+			if(feof($this->socket))
+				return $this->reconnect();
 			
 			if($character === false)
 			{
