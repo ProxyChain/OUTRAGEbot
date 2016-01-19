@@ -27,8 +27,8 @@ class Part extends Event\Template
 	 */
 	public function invoke()
 	{
-		$channel = $this->instance->getChannel($this->packet->parts[2]);
-		$user = $this->instance->getUser($this->packet->hostmask);
+		$channel = $this->instance->getChannel($this->packet->payload);
+		$user = $this->instance->getUser($this->packet->user);
 		
 		$this->dispatch([ $channel, $user, $this->packet->payload ]);
 		
