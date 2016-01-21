@@ -273,6 +273,8 @@ class Instance
 		
 		if(!isset($this->users[$hostmask->nickname]))
 			$this->users[$hostmask->nickname] = new Element\User($this, $hostmask);
+		else
+			$this->users[$hostmask->nickname]->hostmask = $hostmask;
 		
 		return $this->users[$hostmask->nickname];
 	}
