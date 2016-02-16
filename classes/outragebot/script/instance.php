@@ -1,6 +1,6 @@
 <?php
 /**
- *	The script intrepreter for OUTRAG3bot - deals with intrepreting
+ *	The script interpreter for OUTRAG3bot - deals with interpreting
  *	scripts so that scripts can be reloaded multiple times.
  *
  *	Obviously, this particular class might become obselete whenever

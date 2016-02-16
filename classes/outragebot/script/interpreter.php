@@ -1,6 +1,6 @@
 <?php
 /**
- *	The script intrepreter for OUTRAG3bot - deals with intrepreting
+ *	The script interpreter for OUTRAG3bot - deals with interpreter
  *	scripts so that scripts can be reloaded multiple times.
  *
  *	Obviously, this particular class might become obselete whenever
@@ -14,7 +14,7 @@ use \OUTRAGEbot\Core;
 use \OUTRAGEbot\Core\Attributes;
 
 
-class Intrepreter
+class Interpreter
 {
 	/**
 	 *	Tell the system that we want this to be a singleton.

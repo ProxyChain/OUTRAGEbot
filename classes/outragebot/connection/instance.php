@@ -334,7 +334,7 @@ class Instance
 	 */
 	public function activateScript($script)
 	{
-		$this->scripts[strtolower($script)] = Script\Intrepreter::getInstance()->compile($this, $script);
+		$this->scripts[strtolower($script)] = Script\Interpreter::getInstance()->compile($this, $script);
 		return true;
 	}
 	
