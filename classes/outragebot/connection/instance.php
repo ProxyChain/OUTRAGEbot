@@ -349,6 +349,7 @@ class Instance
 		if(!isset($this->scripts[$script]))
 			return false;
 		
+		$this->scripts[$script]->destruct();
 		unset($this->scripts[$script]);
 		return true;
 	}

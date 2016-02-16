@@ -67,11 +67,6 @@ class Instance
 	public final function __destruct()
 	{
 		$this->destruct();
-		$this->off();
-		
-		unset($this->context);
-		unset($this->instance);
-		
 		return true;
 	}
 	
@@ -90,6 +85,10 @@ class Instance
 	 */
 	public function destruct()
 	{
+		$this->off();
+		
+		unset($this->context);
+		unset($this->instance);
 		return true;
 	}
 	
