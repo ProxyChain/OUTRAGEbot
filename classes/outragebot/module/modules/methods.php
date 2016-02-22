@@ -99,6 +99,27 @@ class Methods extends Module\Template
 	
 	
 	/**
+	 *	Send a notice to the specified target.
+	 *
+	 *	@param mixed $channel  Destination target
+	 *	@param mixed $message  Message to be sent to the target
+	 */
+	public function notice($context, $target, $message)
+	{
+		if(!is_array($message))
+			$message = explode("\n", $message);
+		
+		foreach($message as $item)
+		{
+			if(strlen($item))
+				$context->instance->raw("NOTICE ".$target." :".$item);
+		}
+		
+		return $this;
+	}
+	
+	
+	/**
 	 *	Send a raw string to the server.
 	 *
 	 *	@param mixed $message  Message to be sent to the server
